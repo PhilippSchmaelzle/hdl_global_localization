@@ -10,16 +10,17 @@ bbs/max_theta: 3.15
 
 # global map config
 # slice height range (map coordinate)
-bbs/map_min_z: 2.0
-bbs/map_max_z: 2.4
+bbs/map_min_z: -200.0
+bbs/map_max_z: 200.0
 # 2D map params
-bbs/map_width: 512
-bbs/map_height: 1024
+bbs/map_width: 16384
+bbs/map_height: 16384
 bbs/map_resolution: 0.5
 bbs/max_points_per_cell: 5
 # precomp map pyramid
 bbs/map_pyramid_level: 6
 
 # scan slice height range (sensor coordinate)
-bbs/scan_min_z: -0.2
-bbs/scan_max_z: 0.2
+bbs/scan_min_z: -0.5
+bbs/scan_max_z: 2.5
+bbs/lidar_map_frame_id: "lidar_map"

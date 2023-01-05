@@ -32,6 +32,7 @@ protected:
   ros::Publisher scan_slice_pub;
 
   std::unique_ptr<BBSLocalization> bbs;
+  std::string lidar_map_frame_id;
 };
 
 }  // namespace hdl_global_localization

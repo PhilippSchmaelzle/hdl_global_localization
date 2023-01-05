@@ -44,10 +44,12 @@ void GlobalLocalizationBBS::set_global_map(pcl::PointCloud<pcl::PointXYZ>::Const
   int max_points_per_cell = private_nh.param<int>("bbs/max_points_per_cell", 5);
   bbs->set_map(map_2d, map_resolution, map_width, map_height, map_pyramid_level, max_points_per_cell);
 
+  lidar_map_frame_id = private_nh.param<std::string>("bbs/lidar_map_frame_id", "map");
+
   auto map_3d = unslice(map_2d);
-  map_3d->header.frame_id = "map";
+  map_3d->header.frame_id = lidar_map_frame_id;
   map_slice_pub.publish(map_3d);
-  gridmap_pub.publish(bbs->gridmap()->to_rosmsg());
+  gridmap_pub.publish(bbs->gridmap()->to_rosmsg(lidar_map_frame_id));
 }
 
 GlobalLocalizationResults GlobalLocalizationBBS::query(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud, int max_num_candidates) {
