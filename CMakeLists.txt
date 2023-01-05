@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(OpenCV REQUIRED)
+find_package(catkin_simple)
+catkin_simple()
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
@@ -25,14 +27,14 @@ if(ENABLE_TEASER)
     GIT_REPOSITORY https://github.com/koide3/TEASER-plusplus
     GIT_TAG master
     BUILD_IN_SOURCE
-    CMAKE_ARGS -DBUILD_TESTS=OFF -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_DOC=OFF -DBUILD_TEASER_FPFH=ON -DCMAKE_INSTALL_PREFIX=${CATKIN_DEVEL_PREFIX}
+    CMAKE_ARGS -DBUILD_TESTS=OFF -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_DOC=OFF -DBUILD_TEASER_FPFH=ON -DCMAKE_INSTALL_PREFIX=${CATKIN_INSTALL_PREFIX}
     INSTALL_COMMAND make install
   )
 
   set(TEASER_LIBRARIES
-    ${CATKIN_DEVEL_PREFIX}/lib/libpmc.so
-    ${CATKIN_DEVEL_PREFIX}/lib/libteaser_registration.so
-    ${CATKIN_DEVEL_PREFIX}/lib/libteaser_features.so
+    ${CATKIN_INSTALL_PREFIX}/lib/libpmc.so
+    ${CATKIN_INSTALL_PREFIX}/lib/libteaser_registration.so
+    ${CATKIN_INSTALL_PREFIX}/lib/libteaser_features.so
   )
 
   add_definitions(-DTEASER_ENABLED)
@@ -42,15 +44,15 @@ endif()
 ## Declare ROS messages, services and actions ##
 ################################################
 
-add_service_files(
-  FILES
-  SetGlobalLocalizationEngine.srv
-  SetGlobalMap.srv
-  QueryGlobalLocalization.srv
-)
-generate_messages(
-  DEPENDENCIES std_msgs sensor_msgs geometry_msgs
-)
+#add_service_files(
+#  FILES
+#  SetGlobalLocalizationEngine.srv
+#  SetGlobalMap.srv
+#  QueryGlobalLocalization.srv
+#)
+#generate_messages(
+#  DEPENDENCIES std_msgs sensor_msgs geometry_msgs
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -82,7 +84,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_library(hdl_global_localization
+cs_add_library(hdl_global_localization
   src/hdl_global_localization/bbs/bbs_localization.cpp
   src/hdl_global_localization/ransac/voxelset.cpp
   src/hdl_global_localization/ransac/ransac_pose_estimation.cpp
@@ -94,7 +96,7 @@ target_link_libraries(hdl_global_localization
 )
 
 if(TEASER_LIBRARIES)
-  add_library(hdl_global_localization_teaser
+  cs_add_library(hdl_global_localization_teaser
     src/hdl_global_localization/engines/global_localization_fpfh_teaser.cpp
   )
   add_dependencies(hdl_global_localization_teaser teaser)
@@ -110,7 +112,7 @@ if(TEASER_LIBRARIES)
 endif()
 
 
-add_executable(hdl_global_localization_node src/hdl_global_localization_node.cpp)
+cs_add_executable(hdl_global_localization_node src/hdl_global_localization_node.cpp)
 add_dependencies(hdl_global_localization_node hdl_global_localization ${PROJECT_NAME}_gencpp)
 target_link_libraries(hdl_global_localization_node
   hdl_global_localization
@@ -118,8 +120,15 @@ target_link_libraries(hdl_global_localization_node
 )
 
 
-add_executable(hdl_global_localization_test src/hdl_global_localization_test.cpp)
+cs_add_executable(hdl_global_localization_test src/hdl_global_localization_test.cpp)
 add_dependencies(hdl_global_localization_test ${PROJECT_NAME}_gencpp)
 target_link_libraries(hdl_global_localization_test
   ${catkin_LIBRARIES}
 )
+
+install(DIRECTORY config/
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+        )
+cs_install()
+
+cs_export()
