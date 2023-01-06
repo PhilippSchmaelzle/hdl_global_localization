@@ -77,11 +77,12 @@ public:
 
   std::shared_ptr<const OccupancyGridMap> gridmap() const;
 
+  BBSParams params;
+
 private:
   std::priority_queue<DiscreteTransformation> create_init_transset(const Points& scan_points) const;
 
 private:
-  BBSParams params;
 
   double theta_resolution;
   std::vector<std::shared_ptr<OccupancyGridMap>> gridmap_pyramid;

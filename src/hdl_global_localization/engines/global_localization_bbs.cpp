@@ -57,6 +57,15 @@ GlobalLocalizationResults GlobalLocalizationBBS::query(pcl::PointCloud<pcl::Poin
   double scan_max_z = private_nh.param<double>("bbs/scan_max_z", 0.2);
   auto scan_2d = slice(*cloud, scan_min_z, scan_max_z);
 
+  bbs->params.max_range = private_nh.param<double>("bbs/max_range", 15.0);
+  bbs->params.min_tx = private_nh.param<double>("bbs/min_tx", -10.0);
+  bbs->params.max_tx = private_nh.param<double>("bbs/max_tx", 10.0);
+  bbs->params.min_ty = private_nh.param<double>("bbs/min_ty", -10.0);
+  bbs->params.max_ty = private_nh.param<double>("bbs/max_ty", 10.0);
+  bbs->params.min_theta = private_nh.param<double>("bbs/min_theta", -3.15);
+  bbs->params.max_theta = private_nh.param<double>("bbs/max_theta", 3.15);
+
+
   std::vector<GlobalLocalizationResult::Ptr> results;
 
   ROS_INFO_STREAM("Query " << scan_2d.size() << " points");
