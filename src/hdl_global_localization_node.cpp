@@ -23,9 +23,9 @@ public:
   GlobalLocalizationNode() : nh(), private_nh("~") {
     set_engine(private_nh.param<std::string>("global_localization_engine", "FPFH_RANSAC"));
 
-    set_engine_server = private_nh.advertiseService("set_engine", &GlobalLocalizationNode::set_engine, this);
-    set_global_map_server = private_nh.advertiseService("set_global_map", &GlobalLocalizationNode::set_global_map, this);
-    query_server = private_nh.advertiseService("query", &GlobalLocalizationNode::query, this);
+    set_engine_server = private_nh.advertiseService("/hdl_global_localization/set_engine", &GlobalLocalizationNode::set_engine, this);
+    set_global_map_server = private_nh.advertiseService("/hdl_global_localization/set_global_map", &GlobalLocalizationNode::set_global_map, this);
+    query_server = private_nh.advertiseService("/hdl_global_localization/query", &GlobalLocalizationNode::query, this);
   }
 
 private:
