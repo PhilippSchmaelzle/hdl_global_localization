@@ -49,7 +49,7 @@ void GlobalLocalizationBBS::set_global_map(pcl::PointCloud<pcl::PointXYZ>::Const
   auto map_3d = unslice(map_2d);
   map_3d->header.frame_id = lidar_map_frame_id;
   map_slice_pub.publish(map_3d);
-  gridmap_pub.publish(bbs->gridmap()->to_rosmsg(lidar_map_frame_id));
+  gridmap_pub.publish(bbs->gridmap()->to_rosmsg(lidar_map_frame_id+"_visu"));
 }
 
 GlobalLocalizationResults GlobalLocalizationBBS::query(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud, int max_num_candidates) {
